@@ -1,0 +1,16 @@
+# build output
+assets/boot.swf
+assets/*.p12
+*.p12
+*.log
+
+# editors / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Release APKs belong in GitHub Releases, not in Git history.
+dist/*
+!dist/.gitkeep

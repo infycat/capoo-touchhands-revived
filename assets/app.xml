@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<application xmlns="http://ns.adobe.com/air/application/51.4">
+    <id>air.capoo</id>
+    <versionNumber>1.0.2</versionNumber>
+    <filename>capoo</filename>
+    <name>capoo</name>
+    <description>capoo</description>
+    <icon>
+        <image36x36>icons/36.png</image36x36>
+        <image48x48>icons/48.png</image48x48>
+        <image72x72>icons/72.png</image72x72>
+        <image96x96>icons/96.png</image96x96>
+        <image144x144>icons/144.png</image144x144>
+        <image192x192>icons/192.png</image192x192>
+    </icon>
+    <initialWindow>
+        <content>boot.swf</content>
+        <systemChrome>none</systemChrome>
+        <transparent>false</transparent>
+        <visible>true</visible>
+        <aspectRatio>portrait</aspectRatio>
+        <autoOrients>false</autoOrients>
+        <fullScreen>true</fullScreen>
+    </initialWindow>
+    <supportedProfiles>mobileDevice</supportedProfiles>
+    <android>
+        <manifestAdditions><![CDATA[
+            <manifest android:installLocation="auto">
+                <application android:debuggable="true" />
+                <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
+                <uses-permission android:name="android.permission.INTERNET" />
+                <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            </manifest>
+        ]]></manifestAdditions>
+    </android>
+</application>
