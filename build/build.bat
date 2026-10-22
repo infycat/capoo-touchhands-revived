@@ -6,7 +6,7 @@ REM   - Adobe AIR SDK 51.x (tested with 51.4.1) set via AIR_SDK env var
 REM   - JDK 17 on PATH (AIR 51's mxmlc/adt require Java 17)
 REM   - SIGNING_KEYSTORE and SIGNING_PASSWORD set in the environment
 REM
-REM Output: dist\capoo-touchhands-revived-v1.0.2.apk
+REM Output: dist\capoo-touchhands-revived-v<versionNumber>.apk
 
 setlocal
 cd /d "%~dp0\.."
@@ -16,7 +16,16 @@ if "%AIR_SDK%"=="" set "AIR_SDK=%USERPROFILE%\AIRSDK\AIRSDK_51.4.1"
 set "ROOT=%CD%"
 set "KEYSTORE=%SIGNING_KEYSTORE%"
 set "KEYPASS=%SIGNING_PASSWORD%"
-set OUT=dist\capoo-touchhands-revived-v1.0.2.apk
+
+REM the artifact name always follows ^<versionNumber^> in app.xml, so the two
+REM can never drift apart
+set "VERSION="
+for /f "tokens=2" %%v in ('findstr /c:"^<versionNumber^>" assets\app.xml') do set "VERSION=%%v"
+if "%VERSION%"=="" (
+  echo ERROR: could not read versionNumber from assets\app.xml
+  exit /b 2
+)
+set OUT=dist\capoo-touchhands-revived-v%VERSION%.apk
 
 if "%KEYSTORE%"=="" (
   echo ERROR: set SIGNING_KEYSTORE before building.

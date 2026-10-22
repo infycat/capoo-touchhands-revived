@@ -120,6 +120,7 @@ package
             super();
 
             t0 = (new Date()).getTime();
+
             loadBoard();
 
             // catch any uncaught runtime error before AIR shows the fatal
@@ -190,12 +191,27 @@ package
         {
             if (!LOG)
                 return;
+
+            var line:String = "[" + (new Date()).getTime() + "] " + msg;
+
+            // also emit to trace(): on some AIR runtimes it shows up in logcat
+            // directly. On AIR for Android it usually does NOT, so the log
+            // file below remains the primary sink - but a release build is not
+            // debuggable, so that file can only be read from a debug build.
+            try
+            {
+                trace(line);
+            }
+            catch (err:Error)
+            {
+            }
+
             try
             {
                 var f:File = File.applicationStorageDirectory.resolvePath("ranklog.txt");
                 var fs:FileStream = new FileStream();
                 fs.open(f, FileMode.APPEND);
-                fs.writeUTFBytes("[" + (new Date()).getTime() + "] " + msg + "\n");
+                fs.writeUTFBytes(line + "\n");
                 fs.close();
             }
             catch (err:Error)

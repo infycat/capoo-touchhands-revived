@@ -2,6 +2,29 @@
 
 本專案遵循 [Semantic Versioning](https://semver.org/)。
 
+## [1.0.3] — 2026-10-23
+
+### Removed
+
+- 移除 `android:debuggable="true"`，正式包不再是 debuggable。
+- 移除 `android.permission.INTERNET` 與 `android.permission.ACCESS_NETWORK_STATE`：
+  遊戲完全離線，包內的 AdMob ANE 為死碼，執行時不需要任何網路存取。
+  最終 APK 的 `uses-permission` 總數為 **0**。
+
+### Changed
+
+- 建置腳本改為從 `app.xml` 的 `<versionNumber>` 推導產物檔名，兩者不會再走鍊。
+- 端到端測試腳本依 APK 是否為 debuggable 自動切換驗證模式：
+  debug 版讀 `adb run-as` 的日誌；正式版改以畫面截圖與 crash logcat 驗證。
+- 應用名稱顯示為「Capoo 摸摸手」。
+
+### Verified
+
+- 真機（Redmi Note 10 5G / Android 11）安裝 v1.0.3：程序存活、無
+  `AdobeAIR: Security warning`、無 FATAL，AIR captive runtime 在零權限下運作正常。
+
+[1.0.3]: https://github.com/infycat/capoo-touchhands-revived/releases/tag/v1.0.3
+
 ## [1.0.2] — 2026-10-23
 
 ### Fixed

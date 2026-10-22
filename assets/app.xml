@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Capoo (Touch Hands) - AIR application descriptor.
+
+    Release notes (v1.0.3):
+      - removed android:debuggable="true"  -> the app is no longer debuggable
+        (it was only needed to read the debug log via `adb run-as`)
+      - removed the INTERNET and ACCESS_NETWORK_STATE permissions:
+        the game is completely offline. The bundled AdMob ANE is dead code
+        (it only appears as a variable type declaration, no method of it is
+        ever called), so no network access is required at all.
+      - the debug log is now also emitted through trace(), so it can be read
+        from logcat without the app being debuggable.
+-->
 <application xmlns="http://ns.adobe.com/air/application/51.4">
     <id>air.capoo</id>
-    <versionNumber>1.0.2</versionNumber>
+    <versionNumber>1.0.3</versionNumber>
     <filename>capoo</filename>
-    <name>capoo</name>
-    <description>capoo</description>
+    <name>Capoo 摸摸手</name>
+    <description>Capoo (摸摸手 / Touch Hands) - revived edition</description>
     <icon>
         <image36x36>icons/36.png</image36x36>
         <image48x48>icons/48.png</image48x48>
@@ -26,10 +39,7 @@
     <android>
         <manifestAdditions><![CDATA[
             <manifest android:installLocation="auto">
-                <application android:debuggable="true" />
                 <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
-                <uses-permission android:name="android.permission.INTERNET" />
-                <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
             </manifest>
         ]]></manifestAdditions>
     </android>

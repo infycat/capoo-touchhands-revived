@@ -11,7 +11,7 @@
 #   export SIGNING_PASSWORD="your-password"
 #   ./build/build.sh
 #
-# Output: dist/capoo-touchhands-revived-v1.0.2.apk
+# Output: dist/capoo-touchhands-revived-v<versionNumber>.apk
 set -e
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -20,7 +20,15 @@ cd "$ROOT"
 AIR_SDK="${AIR_SDK:-$HOME/AIRSDK/AIRSDK_51.4.1}"
 KEYSTORE="${SIGNING_KEYSTORE:-}"
 KEYPASS="${SIGNING_PASSWORD:-}"
-OUT="dist/capoo-touchhands-revived-v1.0.2.apk"
+
+# the artifact name always follows <versionNumber> in app.xml, so the two can
+# never drift apart
+VERSION="$(sed -n 's/.*<versionNumber>\([^<]*\)<\/versionNumber>.*/\1/p' assets/app.xml | head -1)"
+if [ -z "$VERSION" ]; then
+  echo "ERROR: could not read <versionNumber> from assets/app.xml" >&2
+  exit 2
+fi
+OUT="dist/capoo-touchhands-revived-v${VERSION}.apk"
 
 if [[ -z "$KEYSTORE" || -z "$KEYPASS" ]]; then
   echo "ERROR: set SIGNING_KEYSTORE and SIGNING_PASSWORD before building." >&2

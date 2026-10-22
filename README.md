@@ -1,10 +1,12 @@
 # Capoo 摸摸手 · 復活版（Touch Hands — Revived）
 
-[![下載最新版 APK](https://img.shields.io/badge/下載最新版_APK-v1.0.2-2ea44f?style=for-the-badge&logo=android)](https://github.com/infycat/capoo-touchhands-revived/releases/latest/download/capoo-touchhands-revived-v1.0.2.apk)
+[![下載最新版 APK](https://img.shields.io/badge/下載最新版_APK-v1.0.3-2ea44f?style=for-the-badge&logo=android)](https://github.com/infycat/capoo-touchhands-revived/releases/latest/download/capoo-touchhands-revived-v1.0.3.apk)
 
-**[直接下載 APK](https://github.com/infycat/capoo-touchhands-revived/releases/latest/download/capoo-touchhands-revived-v1.0.2.apk)** · [查看 v1.0.2 發佈說明](https://github.com/infycat/capoo-touchhands-revived/releases/tag/v1.0.2) · [瀏覽全部版本](https://github.com/infycat/capoo-touchhands-revived/releases)
+**[直接下載 APK](https://github.com/infycat/capoo-touchhands-revived/releases/latest/download/capoo-touchhands-revived-v1.0.3.apk)** · [查看 v1.0.3 發佈說明](https://github.com/infycat/capoo-touchhands-revived/releases/tag/v1.0.3) · [瀏覽全部版本](https://github.com/infycat/capoo-touchhands-revived/releases)
 
-> Android ARM64 · 16.7 MB · SHA-256 `806A17612B2D97359A69A9EE961652ADD5AF722A54EF27FFA9C769B15DC97D44`
+> Android ARM64 · 16.7 MB · SHA-256 `6DC218F11090518607BB37A3F6EDEA068D8ED20BEDF9B7B5BAE8A8BAA5D9072B`
+>
+> **純離線 · 零權限 · 非 debuggable**
 
 > **English TL;DR** — Capoo (摸摸手 / Touch Hands) is a small Android game built
 > with Adobe AIR + ActionScript 3 (Flash) whose original author stopped
@@ -145,10 +147,28 @@ onOpenHandler / onOpenErrorHandler
 
 直接從 GitHub Releases 下載即可，安裝包已包含遊戲本體，裝完就能玩：
 
-**[下載 capoo-touchhands-revived-v1.0.2.apk](https://github.com/infycat/capoo-touchhands-revived/releases/latest/download/capoo-touchhands-revived-v1.0.2.apk)**
+**[下載 capoo-touchhands-revived-v1.0.3.apk](https://github.com/infycat/capoo-touchhands-revived/releases/latest/download/capoo-touchhands-revived-v1.0.3.apk)**
 
 - 安卓 8.0+（API 26+）的 ARM64 设备均可；采用 **captive runtime**，无需另外装 AIR。
 - 安裝時若提示「未知來源」，請依 Android 的系統提示操作。本專案以自簽憑證簽署；私鑰不會公開在倉庫中。
+- **完全離線**：v1.0.3 起 APK 不再聲明任何權限（`INTERNET`、`ACCESS_NETWORK_STATE` 已移除），
+  也不帶 `android:debuggable` 標記，純粹是一個不需要網路、不收集任何資料的離線小遊戲。
+
+### v1.0.3 發佈加固
+
+| 項目 | v1.0.2 | v1.0.3 |
+|---|---|---|
+| `android:debuggable` | `true` | **移除**（非 debuggable 正式包） |
+| `android.permission.INTERNET` | 有 | **移除** |
+| `android.permission.ACCESS_NETWORK_STATE` | 有 | **移除** |
+| `uses-permission` 總數 | 2 | **0** |
+
+- 敢刪網路權限的理由：整個遊戲**完全離線**。包內附帶的 AdMob ANE 是死碼
+  （反編譯後確認它只出現在變數型別宣告裡，位元組碼中從未呼叫過它的任何方法），
+  執行時不需要任何網路存取；`adt` 在打包時也會提示
+  `Application has not specified its permission requirements`。
+- 保留 `uses-sdk`（minSdk 21 / targetSdk 33）不變。
+- `versionCode` 由 1000002 升到 1000003，可直接覆蓋安裝舊版。
 
 ---
 
@@ -184,13 +204,13 @@ export SIGNING_PASSWORD="你的憑證密碼"
 ./build/build.sh          # Windows 用 build\build.bat
 ```
 
-产物：`dist/capoo-touchhands-revived-v1.0.2.apk`。
+产物：`dist/capoo-touchhands-revived-v1.0.3.apk`（檔名會自動跟隨 `app.xml` 裡的 `<versionNumber>`）。
 
 安装到手机：
 
 ```bash
-adb uninstall air.capoo
-adb install --no-incremental -d dist/capoo-touchhands-revived-v1.0.2.apk
+adb uninstall air.air.capoo
+adb install --no-incremental -d dist/capoo-touchhands-revived-v1.0.3.apk
 ```
 
 ---
@@ -205,7 +225,7 @@ capoo-touchhands-revived/
 ├── src/
 │   └── Boot.as            # ★ 复活引导层（核心修复代码，全部逻辑都在这里）
 ├── assets/
-│   ├── app.xml            # AIR 应用描述符（id=air.capoo, 竖屏, 全屏）
+│   ├── app.xml            # AIR 应用描述符（id=air.capoo, 竖屏, 全屏, 零权限）
 │   ├── capoo.swf          # 游戏本体（从原版 APK 提取，仅作复活用途）
 │   └── icons/             # 36/48/72/96/144/192 px 应用图标
 ├── build/
@@ -215,6 +235,9 @@ capoo-touchhands-revived/
 │   └── find_ok_center.py  # 从截图中自动定位游戏自己的 OK 按钮
 └── dist/                  # 本地建置輸出；正式 APK 發佈於 GitHub Releases
 ```
+
+> 簽章私鑰**不進倉庫**：`SIGNING_KEYSTORE` / `SIGNING_PASSWORD` 由環境變數提供，
+> `assets/capoo.p12` 不存在於版本庫中。
 
 > ⚠️ 构建小坑：`adt` 会把 `<content>` 与图标路径**相对于当前工作目录**解析，
 > 所以打包那一步必须 `cd assets` 再执行（`build.sh` / `build.bat` 已经处理好了）。

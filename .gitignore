@@ -14,3 +14,6 @@ Thumbs.db
 # Release APKs belong in GitHub Releases, not in Git history.
 dist/*
 !dist/.gitkeep
+
+# e2e test screenshots
+build/*.png
